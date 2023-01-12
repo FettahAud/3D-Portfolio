@@ -4,6 +4,7 @@ This is one of the [threeJsJournery](https://threejs-journey.com/) lessons and I
 
 ## Todo  
 - [x] Open the mac by a click  
+- [ ] Add loading screen
 - [ ] Add sounds
 - [ ] Add mobile version
 - [ ] Add my own portfolio 
