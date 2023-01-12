@@ -6,13 +6,22 @@ import {
   PresentationControls,
   useGLTF,
   Text,
+  useAnimations,
 } from "@react-three/drei";
-import { useControls } from "leva";
-
+import { useEffect } from "react";
+import * as THREE from "three";
 export default function Experience() {
-  const model = useGLTF(
-    "https://vazxmixjsiawhamofees.supabase.co/storage/v1/object/public/models/macbook/model.gltf"
-  );
+  const model = useGLTF("./mac.glb");
+  const animations = useAnimations(model.animations, model.scene);
+  console.log(animations);
+  useEffect(() => {
+    const action = animations.actions.open;
+    window.addEventListener("click", () => {
+      action.setLoop(THREE.LoopOnce);
+      action.clampWhenFinished = true;
+      action.play();
+    });
+  }, []);
   return (
     <>
       {/* <OrbitControls /> */}
