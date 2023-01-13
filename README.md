@@ -3,8 +3,12 @@
 This is one of the [threeJsJournery](https://threejs-journey.com/) lessons and I want to improve it
 
 ## Todo  
-- [ ] Open the mac by a click  
+- [x] Open the mac by a click  
+- [ ] Add loading screen
 - [ ] Add sounds
 - [ ] Add mobile version
 - [ ] Add my own portfolio 
 - [ ] Create my own laptop on blender
+
+### Licensees
+- Mac model from https://market.pmnd.rs/model/macbook
