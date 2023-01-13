@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import {
   ContactShadows,
   Environment,
@@ -8,20 +10,24 @@ import {
   Text,
   useAnimations,
 } from "@react-three/drei";
-import { useEffect } from "react";
-import * as THREE from "three";
+import { useEffect, useState } from "react";
+import { Suspense } from "react";
+
 export default function Experience() {
   const model = useGLTF("./mac.glb");
   const animations = useAnimations(model.animations, model.scene);
-  console.log(animations);
+  const [action, setAction] = useState();
+
   useEffect(() => {
-    const action = animations.actions.open;
-    window.addEventListener("click", () => {
-      action.setLoop(THREE.LoopOnce);
-      action.clampWhenFinished = true;
-      action.play();
-    });
-  }, []);
+    setAction(animations.actions.open);
+  }, [animations]);
+
+  const openMac = () => {
+    action.setLoop(THREE.LoopOnce);
+    action.clampWhenFinished = true;
+    action.play();
+  };
+
   return (
     <>
       {/* <OrbitControls /> */}
@@ -46,17 +52,17 @@ export default function Experience() {
             rotation={[-0.256, Math.PI, 0]}
             position={[0, 0.55, -1.4]}
           /> */}
-          <primitive object={model.scene} position-y={-1.2}>
-            <Html
-              transform
-              wrapperClass="htmlScreen"
-              distanceFactor={1.16}
-              position={[0, 1.56, -1.4]}
-              rotation-x={-0.256}
-            >
-              {/* My website well come here */}
-              {/* <iframe src="https://bruno-simon.com/html/"></iframe> */}
-            </Html>
+          <primitive onClick={openMac} object={model.scene} position-y={-1.2}>
+            {/* <Html
+                transform
+                wrapperClass="htmlScreen"
+                distanceFactor={1.16}
+                position={[0, 1.56, -1.4]}
+                rotation-x={-0.256}
+              > */}
+            {/* My website well come here */}
+            {/* <iframe src="https://bruno-simon.com/html/"></iframe> */}
+            {/* </Html> */}
           </primitive>
           <Text
             font="./bangers-v20-latin-regular.woff"
