@@ -4,7 +4,6 @@ import { Canvas } from "@react-three/fiber";
 import Experience from "./Experience.js";
 import { Suspense } from "react";
 import { Loader } from "@react-three/drei";
-// import Loader from "./Loaderdas";
 
 const root = ReactDOM.createRoot(document.querySelector("#root"));
 

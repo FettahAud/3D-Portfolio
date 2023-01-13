@@ -1,5 +1,5 @@
 import * as THREE from "three";
-
+import gsap from "gsap";
 import {
   ContactShadows,
   Environment,
@@ -9,18 +9,62 @@ import {
   useGLTF,
   Text,
   useAnimations,
+  Center,
 } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { Suspense } from "react";
+import { useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 
 export default function Experience() {
-  const model = useGLTF("./mac.glb");
-  const animations = useAnimations(model.animations, model.scene);
+  const mac = useGLTF("./mac.glb");
+  const iphone = useGLTF("./iphone.glb");
+
+  const { size } = useThree();
+
+  const object = useRef();
+  const text = useRef();
+
+  const [isDesktop, setIsDesktop] = useState();
   const [action, setAction] = useState();
+
+  const animations = useAnimations(mac.animations, mac.scene);
 
   useEffect(() => {
     setAction(animations.actions.open);
   }, [animations]);
+  useEffect(() => {
+    if (size.width > 992) {
+      setIsDesktop(true);
+      console.log(text.current.maxWidth);
+      gsap.to(text.current, {
+        fontSize: 1,
+        maxWidth: 3,
+      });
+      gsap.to(text.current.rotation, {
+        y: -1.25,
+      });
+      gsap.to(text.current.position, {
+        x: 2,
+        y: 0.75,
+        z: 0.75,
+      });
+    } else {
+      setIsDesktop(false);
+      gsap.to(text.current, {
+        fontSize: 0.5,
+        maxWidth: 4,
+      });
+      gsap.to(text.current.rotation, {
+        y: -0.25,
+      });
+      gsap.to(text.current.position, {
+        x: 0.5,
+        y: 1.2,
+        z: -1.5,
+      });
+    }
+  }, [size.width]);
 
   const openMac = () => {
     action.setLoop(THREE.LoopOnce);
@@ -52,32 +96,36 @@ export default function Experience() {
             rotation={[-0.256, Math.PI, 0]}
             position={[0, 0.55, -1.4]}
           /> */}
-          <primitive onClick={openMac} object={model.scene} position-y={-1.2}>
-            {/* <Html
-                transform
-                wrapperClass="htmlScreen"
-                distanceFactor={1.16}
-                position={[0, 1.56, -1.4]}
-                rotation-x={-0.256}
-              > */}
-            {/* My website well come here */}
-            {/* <iframe src="https://bruno-simon.com/html/"></iframe> */}
-            {/* </Html> */}
-          </primitive>
+          {isDesktop ? (
+            <>
+              <primitive
+                ref={object}
+                onClick={openMac}
+                object={mac.scene}
+                position-y={-1.2}
+              />
+            </>
+          ) : (
+            <>
+              <primitive
+                object={iphone.scene}
+                position-y={-2.5}
+                rotation-y={-0.5}
+                rotation-x={-0.2}
+              />
+            </>
+          )}
           <Text
-            font="./bangers-v20-latin-regular.woff"
-            fontSize={1}
-            rotation-y={-1.25}
-            position={[2, 0.75, 0.75]}
+            ref={text}
             color="#FF7B54"
-            maxWidth={2}
+            font="./bangers-v20-latin-regular.woff"
             textAlign="center"
           >
             Fettah Aud
           </Text>
         </Float>
       </PresentationControls>
-      <ContactShadows position-y={-1.4} opacity={0.5} blur={2.4} scale={5} />
+      <ContactShadows position-y={-2.5} opacity={0.5} blur={2.4} scale={5} />
     </>
   );
 }
